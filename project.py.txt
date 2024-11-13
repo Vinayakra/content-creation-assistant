@@ -1,0 +1,54 @@
+import google.generativeai as genai
+genai.configure(api_key="AIzaSyCoYzJU2VHpaOgBq0CoElAuy_MyRJIhVhw")
+
+
+model = genai.GenerativeModel("gemini-1.5-flash")
+
+
+def get_user_input():
+    print("Let's customize your Content Muse bot!")
+    target_audience = input("Who is your target audience? (e.g., 'social media influencers, bloggers, etc.) ")
+    platform = input("Which platform are you focusing on? (e.g., 'Instagram', 'YouTube', 'Blog', etc.) ")
+    return target_audience, platform
+
+def create_system_prompt(target_audience, platform):
+    system_prompt = f"""
+    You are a content creation assistant. You provide creative ideas for posts, videos, 
+    blog articles, and content calendars tailored to {target_audience} on {platform}. 
+    Be helpful, inspiring, and provide ideas that will engage the target audience on that platform.
+    """
+    return system_prompt
+
+def generate_content_ideas(user_input, system_prompt):
+    try:
+        prompt = system_prompt + " " + user_input
+        response = model.generate_content(prompt)
+        if response:
+            return response.text
+        else:
+            return "Hmm, I didn't catch that. Could you try asking differently?"
+    
+    except Exception as e:
+        return f"An error occurred while generating content: {e}"
+
+if __name__ == "__main__":
+
+    target_audience, platform = get_user_input()
+    system_prompt = create_system_prompt(target_audience, platform)
+
+    print(f"\nWelcome to Content Muse! Ask me for content ideas for {platform} and more.")
+    
+    while True:
+        try:
+            user_input = input(f"You: What type of content are you looking for on {platform}? (e.g., 'post idea', 'video idea', etc.) ")
+            if user_input.lower() == "exit":
+                print("Goodbye! Happy creating!")
+                break
+            response = generate_content_ideas(user_input, system_prompt)
+            print(f"Bot: {response}")
+        
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+            break
+
+    
