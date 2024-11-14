@@ -1,9 +1,6 @@
 import google.generativeai as genai
-
-# Configure your actual API key here
 genai.configure(api_key="AIzaSyCoYzJU2VHpaOgBq0CoElAuy_MyRJIhVhw")
 
-# Initialize the model
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 def get_user_input():
@@ -43,7 +40,7 @@ if __name__ == "__main__":
             user_input = input(f"\nYou: What type of content are you looking for on {platform}? (e.g., 'post idea', 'video idea', etc.) ")
             if user_input.lower() == "exit":
                 print("Goodbye! Happy creating!")
-                exit()  # Exits the entire program
+                exit()
             elif user_input.lower() == "change":
                 # Breaks inner loop to re-prompt for audience and platform
                 break
